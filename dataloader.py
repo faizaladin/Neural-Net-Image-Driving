@@ -38,8 +38,13 @@ def pil_loader(path):
 
 class CarlaSteeringDataset(Dataset):
     def __init__(self, data_root, max_samples=1500, transform=None):
+        from torchvision import transforms
         self.data = []
-        self.transform = transform
+        # If no transform is provided, use ToTensor by default
+        if transform is None:
+            self.transform = transforms.ToTensor()
+        else:
+            self.transform = transform
         town_data = load_frame_steering_tuples(data_root, max_samples)
         for tuples in town_data.values():
             self.data.extend(tuples)
@@ -54,18 +59,18 @@ class CarlaSteeringDataset(Dataset):
             image = self.transform(image)
         return image, torch.tensor(steer, dtype=torch.float32)
 
-if __name__ == "__main__":
-    from torchvision import transforms
-    import matplotlib.pyplot as plt
+# if __name__ == "__main__":
+#     from torchvision import transforms
+#     import matplotlib.pyplot as plt
 
-    # No resizing, just convert to tensor
-    transform = transforms.ToTensor()
-    dataset = CarlaSteeringDataset('/home/faizaladin/Desktop/image-based-driving', transform=transform)
-    print(f"Dataset size: {len(dataset)} samples")
-    img, steer = dataset[0]
-    print(f"Image shape: {img.shape}, Steering: {steer.item()}")
-    # Display the image
-    plt.imshow(img.permute(1, 2, 0))
-    plt.title(f"Steering: {steer.item():.3f}")
-    plt.axis('off')
-    plt.show()
+#     # No resizing, just convert to tensor
+#     transform = transforms.ToTensor()
+#     dataset = CarlaSteeringDataset('/home/faizaladin/Desktop/image-based-driving', transform=transform)
+#     print(f"Dataset size: {len(dataset)} samples")
+#     img, steer = dataset[0]
+#     print(f"Image shape: {img.shape}, Steering: {steer.item()}")
+#     # Display the image
+#     plt.imshow(img.permute(1, 2, 0))
+#     plt.title(f"Steering: {steer.item():.3f}")
+#     plt.axis('off')
+#     plt.show()
