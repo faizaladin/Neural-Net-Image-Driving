@@ -43,7 +43,7 @@ IMAGE_HEIGHT = 600
 # New dimensions for the saved, resized images
 RESIZED_IMAGE_WIDTH = 400
 RESIZED_IMAGE_HEIGHT = 300
-MAPS = ["Town04"]  # Set to run only on Town03 as requested
+MAPS = ["Town02"]  # Set to run only on Town03 as requested
 FIXED_DELTA_SECONDS = 0.1 # Corresponds to 10 FPS
 
 def restart_simulator():
@@ -130,9 +130,9 @@ def collect_data_on_map(map_name, output_dir):
         camera.listen(image_queue.put)
 
         start_location = spawn_point.location
-        max_frames = 20000  # Safety limit to prevent infinite loops
+        max_frames = 8000  # Collect a fixed number of frames
 
-        print(f"🚀 Starting data collection loop for one lap...")
+        print(f"🚀 Starting data collection loop for {max_frames} frames...")
         world.tick() # Initial tick
 
         for frame_num in range(max_frames):
@@ -167,11 +167,6 @@ def collect_data_on_map(map_name, output_dir):
                 location = vehicle.get_location()
 
                 data_labels.append((image.frame, control.steer, speed, location.x, location.y, location.z))
-
-                # Check if the car has returned near the starting point
-                if frame_num > 200 and location.distance(start_location) < 5.0:
-                    print("🏁 Completed one lap.")
-                    break
         
     finally:
         # --- 5. Cleanup ---
