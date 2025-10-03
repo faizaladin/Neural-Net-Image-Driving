@@ -16,6 +16,8 @@ class Driving(nn.Module):
         self.fc2 = nn.Linear(100, 50)
         self.fc3 = nn.Linear(50, 10)
         self.fc4 = nn.Linear(10, 1)
+        # Dropout layers
+        self.dropout = nn.Dropout(p=0.5)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
@@ -25,8 +27,11 @@ class Driving(nn.Module):
         x = F.relu(self.conv5(x))
         x = x.view(x.size(0), -1)
         x = F.relu(self.fc1(x))
+        x = self.dropout(x)
         x = F.relu(self.fc2(x))
+        x = self.dropout(x)
         x = F.relu(self.fc3(x))
+        x = self.dropout(x)
         x = torch.tanh(self.fc4(x))  # Output in [-1, 1]
         return x.squeeze(1)
 

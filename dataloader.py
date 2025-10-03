@@ -5,6 +5,49 @@ import torch
 from torch.utils.data import Dataset
 from PIL import Image
 
+# Dataset that takes a dict of {town: num_samples} and loads the first N frames for each town
+class CarlaSteeringPerTownSamplesDataset(torch.utils.data.Dataset):
+    def __init__(self, data_root, samples_per_town, transform=None):
+        """
+        samples_per_town: dict mapping town name to number of frames to take (first N, not random)
+        """
+        self.data = []
+        self.transform = transform
+        for town in os.listdir(data_root):
+            town_path = os.path.join(data_root, town)
+            labels_path = os.path.join(town_path, 'labels.csv')
+            if not os.path.isdir(town_path) or not os.path.isfile(labels_path):
+                continue
+            frames = []
+            with open(labels_path, 'r') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    frame = row['frame']
+                    steer = float(row['steer'])
+                    frame_path = os.path.join(town_path, f"{frame}.png")
+                    if os.path.isfile(frame_path):
+                        frames.append((frame_path, steer, frame))
+            # Sort by frame (as int if possible, else as string)
+            try:
+                frames.sort(key=lambda x: int(x[2]))
+            except Exception:
+                frames.sort(key=lambda x: x[2])
+            n = samples_per_town.get(town, 0)
+            if n > 0:
+                for tup in frames[:n]:
+                    self.data.append((tup[0], tup[1]))
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        img_path, steer = self.data[idx]
+        image = pil_loader(img_path)
+        if self.transform:
+            image = self.transform(image)
+        return image, torch.tensor(steer, dtype=torch.float32)
+
+
 def load_frame_steering_tuples(data_root, max_samples=1500):
     """
     For each town folder in data_root, load (frame, steering) tuples.

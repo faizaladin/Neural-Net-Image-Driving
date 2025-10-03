@@ -1,13 +1,13 @@
 import torch
 from torch.utils.data import DataLoader, random_split
-from dataloader import CarlaSteeringDataset
+from dataloader import CarlaSteeringPerTownSamplesDataset
 from model import Driving
 import wandb
 from tqdm import tqdm
 import numpy as np
 
 # Training settings
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 EPOCHS = 5000
 LR = 1e-4
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -16,14 +16,32 @@ wandb.init(project="carla-driving", name="driving-pilotnet")
 
 def main():
     # Dataset and DataLoader
-    dataset = CarlaSteeringDataset('./', transform=None)
-    # Shuffle dataset before splitting
-    indices = np.random.permutation(len(dataset))
-    train_size = int(0.8 * len(dataset))
+    from torchvision import transforms
+    # Define transforms
+    train_transform = transforms.Compose([
+        transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1),
+        transforms.ToTensor()
+    ])
+    val_transform = transforms.ToTensor()
+
+    # Define per-town sample counts (edit as needed)
+    samples_per_town = {
+        "Town01": 736,
+        "Town02": 1276,
+        "Town03": 1308
+        # Add more towns as needed
+    }
+    # Create full dataset with per-town sampling
+    full_dataset = CarlaSteeringPerTownSamplesDataset('./', samples_per_town, transform=None)
+    indices = np.random.permutation(len(full_dataset))
+    train_size = int(0.8 * len(full_dataset))
     train_indices = indices[:train_size]
     val_indices = indices[train_size:]
-    train_dataset = torch.utils.data.Subset(dataset, train_indices)
-    val_dataset = torch.utils.data.Subset(dataset, val_indices)
+    train_dataset = torch.utils.data.Subset(full_dataset, train_indices)
+    val_dataset = torch.utils.data.Subset(full_dataset, val_indices)
+    # Patch the transform for each subset
+    train_dataset.dataset.transform = train_transform
+    val_dataset.dataset.transform = val_transform
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4)
     val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4)
 
