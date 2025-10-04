@@ -8,7 +8,7 @@ import numpy as np
 
 # Training settings
 BATCH_SIZE = 128
-EPOCHS = 5000
+EPOCHS = 1500
 LR = 1e-4
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -102,6 +102,9 @@ def main():
         print(f"Epoch [{epoch+1}/{EPOCHS}] Validation Loss: {avg_val_loss:.4f}")
         wandb.log({"val/loss": avg_val_loss, "epoch": epoch+1})
 
+        torch.save(model.state_dict(), 'driving_model.pth')
+        print("Saving Model")
+
         # Log a random image from the validation set every epoch
         rand_idx = np.random.randint(len(val_dataset))
         img, label = val_dataset[rand_idx]
@@ -120,7 +123,6 @@ def main():
 
     # Save final model
     torch.save(model.state_dict(), 'driving_model.pth')
-    wandb.save('driving_model.pth')
     print("Training complete. Model saved as driving_model.pth")
 
 if __name__ == "__main__":
