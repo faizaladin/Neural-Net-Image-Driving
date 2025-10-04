@@ -24,9 +24,12 @@ def main():
     ])
     val_transform = transforms.ToTensor()
 
-    # Only use Town02 for training and validation
+    # Define per-town sample counts (edit as needed)
     samples_per_town = {
-        "Town02": 736
+        "Town01": 737,
+        "Town02": 1276,
+        "Town03": 1308
+        # Add more towns as needed
     }
     # Create full dataset with per-town sampling
     full_dataset = CarlaSteeringPerTownSamplesDataset('./', samples_per_town, transform=None)
@@ -113,11 +116,13 @@ def main():
             "val/random_pred": pred,
             "epoch": epoch+1
         })
-        torch.save(model.state_dict(), 'driving_model_Town02.pth')
+        torch.save(model.state_dict(), 'town2_3_4.pth')
+        print("Model checkpoint saved as town2_3_4.pth")
         model.train()
 
     # Save final model
-    torch.save(model.state_dict(), 'driving_model_Town02.pth')
+    torch.save(model.state_dict(), 'driving_model.pth')
+    wandb.save('driving_model.pth')
     print("Training complete. Model saved as driving_model.pth")
 
 if __name__ == "__main__":
