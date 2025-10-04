@@ -96,7 +96,7 @@ def main():
                 client = carla.Client(HOST, PORT)
                 client.set_timeout(10.0)
                 print("Loading Town02...")
-                world = client.load_world('Town02')
+                world = client.load_world('Town03')
                 print("✅ CARLA connection successful and Town02 loaded.")
                 break # Exit the loop on successful connection
             except RuntimeError as e:
@@ -119,7 +119,7 @@ def main():
         vehicle_bp = blueprint_library.find('vehicle.tesla.model3')
         # Use a later spawn point (e.g., index 10) to start further down the road
         spawn_points = world.get_map().get_spawn_points()
-        spawn_point = spawn_points[45] if len(spawn_points) > 45 else spawn_points[-1]
+        spawn_point = spawn_points[20] if len(spawn_points) > 25 else spawn_points[-1]
         vehicle = world.spawn_actor(vehicle_bp, spawn_point)
         camera_bp = blueprint_library.find('sensor.camera.rgb')
         camera_bp.set_attribute('image_size_x', str(IMAGE_WIDTH))
