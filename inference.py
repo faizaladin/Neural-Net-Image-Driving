@@ -26,7 +26,7 @@ from model import Driving # Assumes your model class is in model.py
 # --- Configuration ---
 HOST = 'localhost'
 PORT = 2000
-MODEL_PATH = 'town2_3_4_heavy_nd.pth'
+MODEL_PATH = 'town3.pth'
 IMAGE_WIDTH = 400
 IMAGE_HEIGHT = 300
 STEERING_SCALING_FACTOR = 100.0
@@ -113,6 +113,19 @@ def main():
         settings.fixed_delta_seconds = FIXED_DELTA_SECONDS
         world.apply_settings(settings)
         print(f"✅ CARLA set to synchronous mode with dt={FIXED_DELTA_SECONDS}s (10 FPS).")
+
+        weather = carla.WeatherParameters(
+            cloudiness=60.0,
+            precipitation=30.0,
+            precipitation_deposits=20.0,
+            wind_intensity=10.0,
+            sun_azimuth_angle=0.0,
+            sun_altitude_angle=70.0,
+            fog_density=10.0,
+            fog_distance=100.0,
+            wetness=40.0
+        )
+        #world.set_weather(carla.WeatherParameters.SoftRainNoon)
         
         # --- 4. Spawn Vehicle and Camera ---
         blueprint_library = world.get_blueprint_library()
@@ -134,7 +147,7 @@ def main():
         print("🚀 Starting inference loop. Press Ctrl+C to exit.")
 
         # --- 5. Real-time Inference and Control Loop ---
-        target_speed = 3.0  # m/s (about 28.8 km/h)
+        target_speed = 6.0  # m/s (about 28.8 km/h)
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter('carla_inference_recording.mp4', fourcc, 10, (IMAGE_WIDTH, IMAGE_HEIGHT))
         try:
