@@ -1,8 +1,7 @@
-# Neural Network Image Based Driving
+# Neural Network Image Based Driving Data Collection
 
 ## About
-This repository trains a model on various maps in the CARLA simulator to return steering controls given an image. The model is able to train on a single weather condition and apply zero shot learning to other weather conditions.
-
+This repository trains a model on various maps in the CARLA simulator to return steering controls given an image. The model can then be used for data collection to collect trajectories where the car stays in its lane, commits a line violation, or collides with objects depending on the weather condition. 
 
 
 https://github.com/user-attachments/assets/eab35d29-fe0e-4749-b411-324592de2abf
