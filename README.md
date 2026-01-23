@@ -32,7 +32,11 @@ conda activate myenv
 </pre>
 
 ## Results
-Here are some video examples to show the model's capabilities. 
+Here are some video examples to show the model's capabilities between sunny and rainy weathers.
 
-![Town 2 Sunny](assets/town2_sunny.gif)![Town 2 Rainy](assets/town2_rainy.gif)
+<p align="center">
+  <img src="assets/town2_sunny.gif" width="45%" />
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="assets/town2_rainy.gif" width="45%" />
+</p>
 
