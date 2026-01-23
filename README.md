@@ -34,3 +34,5 @@ conda activate myenv
 ## Results
 Here are some video examples to show the model's capabilities. 
 
+![assets/town2_sunny.gif]
+
