@@ -40,3 +40,15 @@ Here are some video examples to show the model's capabilities between sunny and 
   <img src="assets/town2_rainy.gif" width="45%" />
 </p>
 
+<p align="center">
+  <img src="assets/town3_sunny.gif" width="45%" />
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="assets/town3_rainy.gif" width="45%" />
+</p>
+
+<p align="center">
+  <img src="assets/town5_sunny.gif" width="45%" />
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="assets/town5_rainy.gif" width="45%" />
+</p>
+
