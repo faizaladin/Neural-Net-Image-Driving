@@ -44,11 +44,6 @@ class CarlaSteeringPerTownSamplesDataset(torch.utils.data.Dataset):
 
 
 def load_frame_steering_tuples(data_root, max_samples=1500):
-    """
-    For each town folder in data_root, load (frame, steering) tuples.
-    If frames < max_samples, use all. Else, randomly sample max_samples.
-    Returns: dict {town_name: list of (frame_path, steering)}
-    """
     town_data = {}
     for town in os.listdir(data_root):
         town_path = os.path.join(data_root, town)
