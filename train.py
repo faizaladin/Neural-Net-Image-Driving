@@ -24,14 +24,12 @@ def main():
     ])
     val_transform = transforms.ToTensor()
 
-    # Define per-town sample counts (edit as needed)
+    # Define per-town sample counts
     samples_per_town = {
         "Town02": 737,
         "Town03": 1276,
         "Town04": 1308
-        # Add more towns as needed
     }
-    # Create full dataset with per-town sampling
     full_dataset = CarlaSteeringPerTownSamplesDataset('./', samples_per_town, transform=None)
     indices = np.random.permutation(len(full_dataset))
     train_size = int(0.8 * len(full_dataset))
@@ -65,7 +63,7 @@ def main():
             running_loss += loss.item()
             train_bar.set_postfix(loss=loss.item())
             if (i+1) % 10 == 0:
-                # Log the first image in the batch, its label, and prediction
+                # Log the first image in the batch
                 img_np = images[0].cpu().numpy().transpose(1,2,0)
                 wandb.log({
                     "train/loss": loss.item(),
@@ -102,7 +100,7 @@ def main():
         print(f"Epoch [{epoch+1}/{EPOCHS}] Validation Loss: {avg_val_loss:.4f}")
         wandb.log({"val/loss": avg_val_loss, "epoch": epoch+1})
 
-        # Log a random image from the validation set every epoch
+        # Log a image from the validation set every epoch
         rand_idx = np.random.randint(len(val_dataset))
         img, label = val_dataset[rand_idx]
         model.eval()
@@ -120,7 +118,7 @@ def main():
         print("Model checkpoint saved as town2_3_4.pth")
         model.train()
 
-    # Save final model
+    # Save model
     torch.save(model.state_dict(), 'town2_3_4.pth')
     print("Training complete. Model saved as town2_3_4.pth")
 
