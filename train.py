@@ -100,7 +100,7 @@ def main():
         print(f"Epoch [{epoch+1}/{EPOCHS}] Validation Loss: {avg_val_loss:.4f}")
         wandb.log({"val/loss": avg_val_loss, "epoch": epoch+1})
 
-        # Log a image from the validation set every epoch
+        # Log image from the validation set every epoch
         rand_idx = np.random.randint(len(val_dataset))
         img, label = val_dataset[rand_idx]
         model.eval()
