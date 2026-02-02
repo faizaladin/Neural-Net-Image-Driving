@@ -1,7 +1,7 @@
 # Neural Network Image Based Driving
 
 ## About
-This repository trains a model on various maps in the CARLA simulator to return steering controls given an image. The model can then be used for diverse data collection to collect trajectories where the car stays in its lane, commits a line violation, or collides with objects depending on the weather condition. 
+This repository trains a model on various maps in the CARLA simulator to return steering controls given an image. The model can then be used for diverse data collection to collect trajectories where the car stays in its lane, commits a line violation, or collides with objects depending on the weather condition. Data labeling for each trajectory is done automaticall.y 
 
 
 https://github.com/user-attachments/assets/eab35d29-fe0e-4749-b411-324592de2abf
