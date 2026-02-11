@@ -15,26 +15,30 @@ Ubuntu 20.04,
 CARLA 9.14
 
 1. Install the Conda Environment
-<pre>conda env create -f environment.yml
+```
+conda env create -f environment.yml
 conda activate myenv
-</pre>
+```
 
 2. We will need to collect data from CARLA for the training process.
-<pre>python collect_data.py
-</pre>
+```
+python collect_data.py
+```
 
 3. Train the model (An NVIDIA V100 was used to train the model)
-<pre>python train.py
-</pre>
+```
+python train.py
+```
 
 4. Test the model
-<pre>python inference.py
-</pre>
+```
+python inference.py
+```
 
 5. To collect trajectory data:
-<pre>
+```
 python vlm_data.py
-</pre>
+```
 
 ## Results
 Here are some video examples to show the model's capabilities between sunny and rainy weathers.
